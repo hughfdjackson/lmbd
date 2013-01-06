@@ -1,0 +1,16 @@
+{
+  "name": "lmbd",
+  "version": "0.1.0",
+  "main": "src/lmbd.js",
+  "scripts": {
+    "test": "mocha --ui qunit",
+    "prepublish": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hughfdjackson/lmbd.git"
+  },
+  "keywords": [],
+  "author": "hughfdjackson",
+  "license": "BSD"
+}
