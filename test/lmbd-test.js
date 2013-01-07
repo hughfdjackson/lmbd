@@ -26,9 +26,25 @@ test('infers that strings aren\'t variables', function(){
     a.equal(prefixWithA2('c'), 'a b c d')
 })
 
-test('infers that repeated characters are not new variables', function(){
+;['do', 'instanceof', 'typeof', 'else', 'new', 'var', 'catch', 'finally',
+  'return', 'void', 'continue', 'for', 'switch', 'while', 'debugger', 'function', 'this',
+  'with', 'default', 'if', 'throw', 'delete', 'in', 'try']
+
+test('infers that keywords aren\'t variables', function(){
+    a.equal(λ('; switch(true) {case true: break; default: false}').length, 0)
+    a.equal(λ('; do { } while (true)').length, 0)
+})
+
+
+test('infers that repeated characters aren\'t variables', function(){
     var doubleAndAdd = λ('a + b + a')
     a.equal(doubleAndAdd(3, 4), 10)
+})
+
+test('infers that object keys in literal form are not variables', function(){
+    var makeObj = λ('{ a: b }')
+    a.equal(makeObj.length, 1)
+    a.deepEqual(makeObj(2), { a: 2 })
 })
 
 test('infers that nested functions aren\'t variables', function(){

@@ -1,4 +1,5 @@
 // util
+'use strict'
 
 var 
 contains = function(a, v){ return a.indexOf(v) !== -1 },
@@ -21,16 +22,23 @@ stringRemove = function(str){
 
 // implementation
 var 
-dqStr    = /"[^"]*"/g
+dqStr    = /"[^"]*"/g,
 snStr    = /'[^']*'/g,
 fn       = /function\(.*\)\{.*\}/g,
-method   = /\.[a-zA-Z]+[a-zA-Z0-9]*/
-variable = /[a-zA-Z]+/g
+method   = /\.[a-zA-Z]+[a-zA-Z0-9]*/g,
+objProp  = /[a-zA-Z0-9]*[ ]*:/g,
+variable = /[a-zA-Z]+/g,
+keywords = ['break', 'do', 'instanceof', 'typeof', 'case', 'else', 'new', 'var', 'catch', 'finally',
+            'return', 'void', 'continue', 'for', 'switch', 'while', 'debugger', 'function', 'this',
+            'with', 'default', 'if', 'throw', 'delete', 'in', 'try'],
+keywordsRE = new RegExp(keywords.join('|'), 'g'),
+booleans = /true|false/g,
+futurewords = ['class', 'enum', 'extends', 'super', 'const', 'export', 'import']
 
 
 var argsFromStr = function(str){
     var 
-    withoutNestedForms = stringRemove(str, dqStr, snStr, fn, method),
+    withoutNestedForms = stringRemove(str, dqStr, snStr, fn, method, objProp, keywordsRE, booleans),
     args               = withoutNestedForms.match(variable) || []
 
     return uniq(args)
